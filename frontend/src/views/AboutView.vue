@@ -1,58 +1,52 @@
 <script setup lang="ts">
 import BaseIcon from '@/components/BaseIcon.vue';
 
-const LEADERS = [
-  { initials: 'AK', name: 'Alex Kim', role: 'CTO', color: '#2353e6', script: 'Alex Kim' },
-  { initials: 'SR', name: 'Sofia Reyes', role: 'VP Engineering', color: '#1b7a4b', script: 'Sofia Reyes' },
-  { initials: 'NB', name: 'Noah Bennett', role: 'Principal Engineer, Platform', color: '#9a6206', script: 'Noah Bennett' },
-  { initials: 'LH', name: 'Lena Hoffmann', role: 'Principal Engineer, APIs', color: '#c81e3a', script: 'Lena Hoffmann' },
-];
-
-const EA_TEAM = [
-  { initials: 'MJ', name: 'Marcus Johnson', role: 'Head of Enterprise Architecture', color: '#2353e6', focus: 'Leads the Architecture Review Board, shapes the standards roadmap, and partners with engineering leadership on the long-term technical strategy.' },
-  { initials: 'PR', name: 'Priya Rajan', role: 'Principal Architect', color: '#1b7a4b', focus: 'Domain architect for security and data. Authors must-level standards, runs threat-modelling workshops, and owns the exception review process.' },
-  { initials: 'TW', name: 'Tom Walsh', role: 'Compliance & Governance Lead', color: '#9a6206', focus: 'Maps standards to regulatory obligations (SOC 2, GDPR, ISO 27001), tracks audit findings, and maintains the maturity model.' },
-  { initials: 'AV', name: 'Anika Voss', role: 'Program Manager, Standards', color: '#c81e3a', focus: 'Runs the quarterly review cycle, coordinates cross-guild working groups, and ensures proposed standards move from draft to active on schedule.' },
-];
-
 const PRINCIPLES = [
-  { n: '01', title: 'Impact first', body: 'Every standard leads with the business outcome it protects or enables. If we can\'t articulate the why, we shouldn\'t be writing the what.' },
-  { n: '02', title: 'Paved path over mandate', body: 'The best standard is one teams adopt by default, not by force. We build enterprise enablers that make compliance the path of least resistance.' },
-  { n: '03', title: 'Owned, not curated', body: 'Every standard has a named owner who is accountable for its accuracy, relevance, and lifecycle. No orphaned docs.' },
-  { n: '04', title: 'Exception as signal', body: 'A well-used exception process surfaces friction. When we see clusters of the same exception, that\'s a standard that needs revisiting, not just more enforcement.' },
-  { n: '05', title: 'Federated, not centralised', body: 'Domain teams own domain standards. The EA guild sets the bar for quality and process, not the content of every rule.' },
-  { n: '06', title: 'Living documents', body: 'Standards rot. We commit to a regular review cadence and version every change, so teams can trust what they\'re reading is current.' },
+  { title: 'Lead with the why', body: 'Every standard opens with its business impact. If we can\'t explain why it matters, it isn\'t ready to publish, and teams won\'t adopt what they don\'t understand.' },
+  { title: 'Paved paths, not policing', body: 'The fastest way to compliance is a great default. Each standard points to an enterprise enabler that makes the right way the easy way, adopt it and you\'re compliant by construction.' },
+  { title: 'Mandate sparingly', body: 'Must, Should, May means something. We reserve "Must" for what genuinely protects customers and the business, so a mandate always carries weight.' },
+  { title: 'Federated ownership, central coherence', body: 'Standards are owned by the guilds closest to the work, published in one place with one voice. Local expertise, global consistency.' },
+  { title: 'Living documents', body: 'A standard is versioned, dated, and owned. It evolves with the technology and the threat landscape, a stale standard is a liability, not an asset.' },
+  { title: 'Exceptions are data', body: 'A well-reasoned exception isn\'t failure, it\'s a signal. Repeated exceptions tell us a standard needs to change, or an enabler needs to improve.' },
 ];
 
 const MATURITY = [
-  {
-    n: '1', name: 'Aware', tag: 'Starting out', color: '#6c768c',
-    desc: 'Teams know the standards exist and reference them occasionally. No systematic adoption tracking.',
-    signals: ['Standards portal visited', 'Some standards referenced in ADRs'],
-  },
-  {
-    n: '2', name: 'Adopting', tag: 'In progress', color: '#9a6206',
-    desc: 'Must-level standards are being worked toward. Exceptions are filed; plans exist.',
-    signals: ['Exception process in use', 'Active remediation plans', 'Owner contacts known'],
-  },
-  {
-    n: '3', name: 'Compliant', tag: 'Baseline met', color: '#2353e6',
-    desc: 'All must-level standards met. Most should-level in place. Evidence available for audit.',
-    signals: ['Zero open must exceptions', 'Audit evidence ready', 'Most shoulds met'],
-  },
-  {
-    n: '4', name: 'Optimising', tag: 'Ahead of the curve', color: '#1b7a4b',
-    desc: 'Teams adopt enterprise enablers proactively. They contribute proposals and flag gaps.',
-    signals: ['Enablers adopted', 'Standard proposals submitted', 'No drift detected'],
-  },
-  {
-    n: '5', name: 'Leading', tag: 'Setting the bar', color: '#c81e3a',
-    desc: 'Teams co-author standards, mentor others, and run guilds. Their practices become the standard.',
-    signals: ['Guild participation', 'Standards co-authored', 'Cross-team mentoring'],
-  },
+  { lvl: 0, name: 'Ad hoc', tag: 'Unmanaged', color: '#9aa3b5',
+    desc: 'No awareness of the standard. Practices vary team to team and depend on individuals.',
+    signals: ['No shared approach', 'Tribal knowledge', 'Invisible risk'] },
+  { lvl: 1, name: 'Aware', tag: 'Informed', color: '#b3431f',
+    desc: 'Teams know the standard exists and understand why it matters, but adoption is manual and inconsistent.',
+    signals: ['Read the standard', 'Understands the why', 'Manual effort'] },
+  { lvl: 2, name: 'Adopting', tag: 'In progress', color: '#9a6206',
+    desc: 'Teams are actively implementing the requirements, with gaps tracked and a remediation plan in place.',
+    signals: ['Plan in place', 'Gaps tracked', 'Partial coverage'] },
+  { lvl: 3, name: 'Compliant', tag: 'Meets the bar', color: '#1b7a4b',
+    desc: 'The standard is fully met and evidenced. Compliance is verified and any deviations carry an approved exception.',
+    signals: ['Fully met', 'Evidenced', 'Exceptions documented'] },
+  { lvl: 4, name: 'Compliant by default', tag: 'Paved path', color: '#2353e6',
+    desc: 'The team has adopted the enterprise enabler, so compliance is automatic and continuous, it can\'t regress without active effort.',
+    signals: ['Enabler adopted', 'Continuous & automatic', 'Drift-proof'] },
 ];
 
-const MAT_COLORS = ['#e7e9ef', '#fbf2e0', '#dde6fd', '#e7f4ec', '#fdecef'];
+const EA_TEAM = [
+  { name: 'Elena Vasquez', initials: 'EV', role: 'Head of Enterprise Architecture', focus: 'Chairs the Architecture Review Board and owns the overall standards & compliance program.', color: '#2353e6' },
+  { name: 'Tomas Berg', initials: 'TB', role: 'Principal Architect, Standards', focus: 'Owns the standards framework, taxonomy, and the bar for what earns a "Must."', color: '#1c43bd' },
+  { name: 'Aisha Rahman', initials: 'AR', role: 'Compliance & Governance Lead', focus: 'Runs the maturity reviews and tracks adoption across every team and standard.', color: '#6936d3' },
+  { name: 'Jordan Lee', initials: 'JL', role: 'Standards Program Manager', focus: 'Coordinates publishing, versioning, and the exceptions process end to end.', color: '#b3431f' },
+];
+
+const SIG_COLORS = ['#2353e6', '#1c43bd', '#6936d3', '#b3431f'];
+
+const SIGNERS = [
+  { name: 'Maya Chen', role: 'Chief Technology Officer', initials: 'MC' },
+  { name: 'David Okafor', role: 'Chief Information Officer', initials: 'DO' },
+  { name: 'Priya Nair', role: 'Chief Data & AI Officer', initials: 'PN' },
+  { name: 'Sofia Reyes', role: 'Chief Information Security Officer', initials: 'SR' },
+];
+
+function gradient(color: string) {
+  return `linear-gradient(135deg, ${color}, ${color}cc)`;
+}
 </script>
 
 <template>
@@ -61,85 +55,83 @@ const MAT_COLORS = ['#e7e9ef', '#fbf2e0', '#dde6fd', '#e7f4ec', '#fdecef'];
     <section class="about-hero" aria-labelledby="about-heading">
       <div class="wrap about-hero-row">
         <div class="about-hero-text">
-          <div class="eyebrow" style="font-family: var(--mono); font-size: 12.5px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: #7fa0ff; margin-bottom: 20px; display: inline-flex; align-items: center; gap: 9px;">
-            <BaseIcon name="compass" :size="14" :sw="2" aria-hidden="true" /> About the programme
+          <div class="eyebrow">
+            <BaseIcon name="compass" :size="15" :sw="2" aria-hidden="true" /> About these standards
           </div>
-          <h1 id="about-heading">Engineering standards that earn their place.</h1>
-          <p>Every standard in this portal exists because someone asked "why does this matter to the business?" and could answer it. We publish the why alongside the what, because compliance without understanding doesn't stick.</p>
+          <h1 id="about-heading">Why we hold a shared bar, and how we help you clear it.</h1>
+          <p>Acme is a federated engineering organization: many teams, one set of expectations. These standards exist to make the right way the obvious way, explained in plain language, grounded in business impact, and backed by tools that do the heavy lifting for you.</p>
         </div>
         <div class="about-hero-art" aria-hidden="true">
-          <BaseIcon name="scale" :size="200" :sw="1.3" />
+          <BaseIcon name="scale" :size="150" :sw="1.3" />
         </div>
       </div>
     </section>
 
-    <div class="wrap">
-
-      <!-- Mission & Vision -->
-      <section class="about-section" aria-labelledby="mission-heading">
-        <div class="about-eyebrow">
-          <BaseIcon name="compass" :size="13" aria-hidden="true" style="display: inline;" /> Mission &amp; Vision
-        </div>
-        <h2 id="mission-heading">Why this portal exists</h2>
-        <div class="mv-grid">
+    <!-- Mission & Vision -->
+    <section class="about-section" aria-labelledby="mission-heading">
+      <div class="wrap">
+        <div class="about-eyebrow">Our purpose</div>
+        <h2 id="mission-heading">Mission &amp; vision</h2>
+        <div class="mv-grid" style="margin-top: 28px;">
           <div class="mv-card">
             <div class="mv-ic" style="background: var(--blue);" aria-hidden="true">
-              <BaseIcon name="layers" :size="22" />
+              <BaseIcon name="flag" :size="22" :sw="2" />
             </div>
             <h3>Mission</h3>
-            <p>Make it easy for every engineer at Acme to build the right way, by surfacing the standards that protect the business, in a form that's honest about why they exist.</p>
+            <p>Enable every team to ship software that is secure, reliable, and worthy of our customers' trust, fast, by making the right way the easy way.</p>
           </div>
           <div class="mv-card">
-            <div class="mv-ic" style="background: var(--active);" aria-hidden="true">
-              <BaseIcon name="compass" :size="22" />
+            <div class="mv-ic" style="background: var(--enabler);" aria-hidden="true">
+              <BaseIcon name="sparkles" :size="22" :sw="2" />
             </div>
             <h3>Vision</h3>
-            <p>A world where compliance is the default path, not an afterthought, because the paved paths are genuinely better than the alternatives.</p>
+            <p>A federated organization where standards are understood by all, adopted by default, and trusted by engineers, partners, and regulators alike.</p>
           </div>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <!-- Leadership letter -->
-      <section class="about-section" aria-labelledby="letter-heading">
-        <div class="about-eyebrow">
-          <BaseIcon name="mail" :size="13" aria-hidden="true" style="display: inline;" /> From leadership
-        </div>
-        <h2 id="letter-heading">A note from the team</h2>
+    <!-- Leadership letter -->
+    <section class="about-section" style="background: var(--bg-sunken);" aria-labelledby="letter-heading">
+      <div class="wrap">
+        <div class="about-eyebrow" style="text-align: center;">A note from leadership</div>
+        <h2 id="letter-heading" style="text-align: center; margin-bottom: 36px;">A joint letter from your engineering leaders</h2>
         <div class="letter" role="article" aria-label="Leadership letter">
-          <p class="salutation">To every engineer at Acme,</p>
-          <p class="lead-line">We wrote this portal because "it's policy" is not a good enough answer.</p>
-          <p>For too long, engineering standards lived in shared drives, written in passive voice, last reviewed three years ago by someone who has since left. Nobody read them, nobody enforced them, and so nobody followed them. Then something went wrong, and we pointed at the document as if it were a defense.</p>
-          <blockquote class="pull" role="blockquote">
-            "A standard that doesn't explain its business impact is a standard that won't be followed."
-          </blockquote>
-          <p>The rules in this portal are the same rules we've always had. What changed is how we present them. Every standard now leads with the business impact: the breach we prevent, the audit we pass, the customer we don't lose. If we can't write that headline, the standard shouldn't exist.</p>
-          <p>We also want compliance to be the easy path. That's why every standard points to an enterprise enabler, a paved road that makes you compliant by construction. No paperwork, no checklist, just adopt the platform and the standard is met.</p>
-          <p>Thank you for holding yourselves and each other to a high bar. These standards are yours as much as ours. Propose changes, flag outdated content, file exceptions when you need them. This portal only works if it reflects the real world.</p>
+          <p class="salutation">To every engineer, manager, and partner who builds with us,</p>
+          <p class="lead-line">We wrote these standards for one reason: so that doing excellent work doesn't depend on knowing the right person or having been here the longest.</p>
+          <p>In a distributed organization, good intentions don't scale, shared, well-explained expectations do. The standards in this portal are not a compliance checklist handed down from above. They are the hard-won lessons of our guilds, written down, so the whole company can move faster without relearning them the hard way.</p>
+          <p class="pull">"We will never ask you to meet a standard we can't explain, and wherever we can, we'll give you a tool that meets it for you."</p>
+          <p>That is our commitment to you. Every standard leads with its business impact, names a real owner you can talk to, and points to an enterprise enabler, the paved path that makes compliance the default, not a chore. When a standard gets in your way, tell us; an exception is a signal we take seriously, and often the start of a better standard.</p>
+          <p>Hold the bar. Help us raise it. And build things you're proud of.</p>
           <div class="signatures" role="list" aria-label="Signatories">
-            <div v-for="l in LEADERS" :key="l.name" class="sig" role="listitem">
+            <div
+              v-for="(s, i) in SIGNERS"
+              :key="s.name"
+              class="sig"
+              role="listitem"
+            >
               <div
                 class="savatar"
-                :style="{ background: l.color }"
+                :style="{ background: gradient(SIG_COLORS[i]) }"
                 aria-hidden="true"
-              >{{ l.initials }}</div>
+              >{{ s.initials }}</div>
               <div>
-                <div class="sig-script">{{ l.script }}</div>
-                <div class="sname">{{ l.name }}</div>
-                <div class="srole">{{ l.role }}</div>
+                <div class="sig-script">{{ s.name }}</div>
+                <div class="srole">{{ s.role }}</div>
               </div>
             </div>
           </div>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <!-- Enterprise Architecture team -->
-      <section class="about-section" aria-labelledby="ea-team-heading">
-        <div class="about-eyebrow">
-          <BaseIcon name="users" :size="13" aria-hidden="true" style="display: inline;" /> The team
-        </div>
-        <h2 id="ea-team-heading">Enterprise Architecture</h2>
-        <p style="font-size: 16px; color: var(--ink-2); max-width: 64ch; line-height: 1.6; margin: 0 0 4px;">
-          The EA guild chairs the Architecture Review Board, runs quarterly maturity reviews, shepherds exceptions, and is accountable for the quality and currency of every standard in this portal.
+    <!-- Enterprise Architecture team -->
+    <section class="about-section" aria-labelledby="ea-team-heading">
+      <div class="wrap">
+        <div class="about-eyebrow">Who oversees this</div>
+        <h2 id="ea-team-heading">The Enterprise Architecture team</h2>
+        <p style="font-size: 16.5px; color: var(--ink-2); max-width: 64ch; margin: 0 0 8px;">
+          A small, central team stewards the standards and compliance program, not by writing every standard, but by holding the framework together. They chair the <b>Architecture Review Board</b>, run the quarterly maturity reviews, and shepherd exceptions into better standards and enablers.
         </p>
         <div class="team-grid" role="list">
           <div
@@ -150,71 +142,74 @@ const MAT_COLORS = ['#e7e9ef', '#fbf2e0', '#dde6fd', '#e7f4ec', '#fdecef'];
           >
             <div
               class="team-av"
-              :style="{ background: m.color }"
+              :style="{ background: gradient(m.color) }"
               aria-hidden="true"
             >{{ m.initials }}</div>
-            <p class="tc-name">{{ m.name }}</p>
-            <p class="tc-role">{{ m.role }}</p>
+            <div class="tc-name">{{ m.name }}</div>
+            <div class="tc-role">{{ m.role }}</div>
             <p class="tc-focus">{{ m.focus }}</p>
           </div>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <!-- Guiding principles -->
-      <section class="about-section" aria-labelledby="principles-heading">
-        <div class="about-eyebrow">
-          <BaseIcon name="compass" :size="13" aria-hidden="true" style="display: inline;" /> How we work
-        </div>
+    <!-- Guiding principles -->
+    <section class="about-section" aria-labelledby="principles-heading">
+      <div class="wrap">
+        <div class="about-eyebrow">How we write standards</div>
         <h2 id="principles-heading">Guiding principles</h2>
+        <p style="font-size: 16.5px; color: var(--ink-2); max-width: 62ch; margin: 0 0 30px;">
+          Six principles shape every standard in this portal, what we choose to mandate, how we explain it, and how we help you meet it.
+        </p>
         <div class="principles" role="list">
           <div
-            v-for="p in PRINCIPLES"
-            :key="p.n"
+            v-for="(p, i) in PRINCIPLES"
+            :key="p.title"
             class="principle"
             role="listitem"
           >
-            <div class="pn" aria-hidden="true">{{ p.n }}</div>
+            <div class="pn" aria-hidden="true">{{ String(i + 1).padStart(2, '0') }}</div>
             <div>
               <h4>{{ p.title }}</h4>
               <p>{{ p.body }}</p>
             </div>
           </div>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <!-- Maturity model -->
-      <section class="about-section" aria-labelledby="maturity-heading">
-        <div class="about-eyebrow">
-          <BaseIcon name="activity" :size="13" aria-hidden="true" style="display: inline;" /> Maturity model
-        </div>
-        <h2 id="maturity-heading">Where is your team?</h2>
-        <p style="font-size: 16px; color: var(--ink-2); max-width: 64ch; line-height: 1.6; margin: 0 0 28px;">
-          Use this model to assess your team's current posture and chart a path forward. Maturity reviews happen quarterly through the Architecture Review Board.
+    <!-- Maturity model -->
+    <section class="about-section" style="background: var(--bg-sunken);" aria-labelledby="maturity-heading">
+      <div class="wrap">
+        <div class="about-eyebrow">Measuring adoption</div>
+        <h2 id="maturity-heading">The compliance maturity model</h2>
+        <p style="font-size: 16.5px; color: var(--ink-2); max-width: 64ch; margin: 0 0 28px;">
+          We measure each team against every applicable standard on a five-stage scale. The goal isn't just to reach <b>Compliant</b>, it's to reach <b>Compliant by default</b>, where adopting the enterprise enabler makes compliance automatic and impossible to silently regress.
         </p>
 
         <div
           class="mat-bar"
           role="img"
-          aria-label="Maturity model progress bar: 5 levels from Aware to Leading"
+          aria-label="Maturity model progress bar: 5 levels from Ad hoc to Compliant by default"
         >
           <span
-            v-for="(m, i) in MATURITY"
-            :key="m.n"
-            :style="{ background: MAT_COLORS[i] }"
-            :title="`Level ${m.n}: ${m.name}`"
+            v-for="m in MATURITY"
+            :key="m.lvl"
+            :style="{ background: m.color }"
+            :title="`Level ${m.lvl}: ${m.name}`"
           ></span>
         </div>
 
         <div class="maturity" role="list">
           <div
             v-for="m in MATURITY"
-            :key="m.n"
+            :key="m.lvl"
             class="mat-row"
             role="listitem"
-            :aria-label="`Level ${m.n}: ${m.name} — ${m.tag}`"
+            :aria-label="`Level ${m.lvl}: ${m.name} — ${m.tag}`"
           >
             <div class="mat-left">
-              <div class="mat-level" :style="{ background: m.color }" aria-hidden="true">{{ m.n }}</div>
+              <div class="mat-level" :style="{ background: m.color }" aria-hidden="true">{{ m.lvl }}</div>
               <div>
                 <div class="ml-name">{{ m.name }}</div>
                 <div class="ml-tag">{{ m.tag }}</div>
@@ -222,7 +217,7 @@ const MAT_COLORS = ['#e7e9ef', '#fbf2e0', '#dde6fd', '#e7f4ec', '#fdecef'];
             </div>
             <div class="mat-right">
               <p class="mr-desc">{{ m.desc }}</p>
-              <div class="mr-signals" role="list" :aria-label="`Signals for level ${m.n}`">
+              <div class="mr-signals" role="list" :aria-label="`Signals for level ${m.lvl}`">
                 <span
                   v-for="(s, j) in m.signals"
                   :key="j"
@@ -233,39 +228,16 @@ const MAT_COLORS = ['#e7e9ef', '#fbf2e0', '#dde6fd', '#e7f4ec', '#fdecef'];
             </div>
           </div>
         </div>
-      </section>
 
-      <!-- Process -->
-      <section class="about-section" aria-labelledby="process-heading">
-        <div class="about-eyebrow">
-          <BaseIcon name="clock" :size="13" aria-hidden="true" style="display: inline;" /> Process
+        <div style="display: flex; gap: 12px; margin-top: 28px; align-items: center; flex-wrap: wrap;">
+          <RouterLink to="/browse" class="btn btn-primary">
+            Browse the standards <BaseIcon name="arrowRight" :size="15" aria-hidden="true" />
+          </RouterLink>
+          <RouterLink to="/enablers" class="btn btn-ghost">
+            <BaseIcon name="bolt" :size="15" :sw="2" aria-hidden="true" /> See compliant-by-default enablers
+          </RouterLink>
         </div>
-        <h2 id="process-heading">How standards are maintained</h2>
-        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 8px;">
-          <div style="padding: 26px 28px; border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--surface);">
-            <div style="width: 38px; height: 38px; border-radius: 10px; background: var(--blue-50); color: var(--blue); display: grid; place-items: center; margin-bottom: 16px;" aria-hidden="true">
-              <BaseIcon name="edit" :size="18" />
-            </div>
-            <h3 style="font-size: 16px; font-weight: 750; margin: 0 0 8px;">Propose</h3>
-            <p style="font-size: 14px; color: var(--ink-2); line-height: 1.55; margin: 0;">Any engineer can propose a new standard or a change to an existing one via the proposal form. The owning guild reviews within two weeks.</p>
-          </div>
-          <div style="padding: 26px 28px; border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--surface);">
-            <div style="width: 38px; height: 38px; border-radius: 10px; background: var(--active-50); color: var(--active); display: grid; place-items: center; margin-bottom: 16px;" aria-hidden="true">
-              <BaseIcon name="checkCircle" :size="18" />
-            </div>
-            <h3 style="font-size: 16px; font-weight: 750; margin: 0 0 8px;">Review</h3>
-            <p style="font-size: 14px; color: var(--ink-2); line-height: 1.55; margin: 0;">Proposed standards enter a 30-day comment period with cross-guild review. Must-level standards require ARB sign-off before publication.</p>
-          </div>
-          <div style="padding: 26px 28px; border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--surface);">
-            <div style="width: 38px; height: 38px; border-radius: 10px; background: var(--should-50); color: var(--should); display: grid; place-items: center; margin-bottom: 16px;" aria-hidden="true">
-              <BaseIcon name="clock" :size="18" />
-            </div>
-            <h3 style="font-size: 16px; font-weight: 750; margin: 0 0 8px;">Review cadence</h3>
-            <p style="font-size: 14px; color: var(--ink-2); line-height: 1.55; margin: 0;">All active standards are reviewed annually by their owners. Must-level standards are reviewed quarterly. Deprecated standards are archived after 12 months.</p>
-          </div>
-        </div>
-      </section>
-
-    </div>
+      </div>
+    </section>
   </div>
 </template>
